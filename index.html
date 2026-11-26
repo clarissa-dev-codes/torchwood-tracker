@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torchwood Three // Orbital Defense</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="terminal">
+        <header>
+            <h1>TORCHWOOD THREE // ORBITAL SCANNER</h1>
+            <p class="status">SYSTEM STATUS: <span id="system-status">STANDBY</span></p>
+        </header>
+
+        <section class="controls">
+            <div class="control-group">
+                <label for="scan-date">TEMPORAL COORDINATES (DATE):</label>
+                <input type="date" id="scan-date">
+            </div>
+
+            <div class="control-group checkbox-group">
+                <input type="checkbox" id="hazard-only">
+                <label for="hazard-only">ISOLATE HOSTILE FLEETS ONLY</label>
+            </div>
+
+            <div class="control-group checkbox-group">
+                <input type="checkbox" id="audio-enabled" checked>
+                <label for="audio-enabled">CLOISTER ALARM AUDIO</label>
+            </div>
+        </section>
+
+        <button id="scan-btn">INITIATE DEEP SPACE SCAN</button>
+
+        <div id="results-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

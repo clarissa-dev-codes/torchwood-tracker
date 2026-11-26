@@ -1,0 +1,111 @@
+body {
+    background-color: #050a14;
+    color: #00f3ff;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    margin: 0;
+}
+
+.terminal {
+    width: 100%;
+    max-width: 850px;
+    border: 2px solid #00f3ff;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+    background-color: #091224;
+}
+
+header {
+    border-bottom: 1px solid #00f3ff;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin: 0 0 10px 0;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px dashed #00f3ff;
+    background-color: rgba(0, 243, 255, 0.03);
+    align-items: center;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+input[type="date"] {
+    background-color: #050a14;
+    color: #00f3ff;
+    border: 1px solid #00f3ff;
+    padding: 6px 10px;
+    font-family: inherit;
+    color-scheme: dark;
+}
+
+input[type="checkbox"] {
+    accent-color: #00f3ff;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+button {
+    background-color: transparent;
+    color: #00f3ff;
+    border: 2px solid #00f3ff;
+    padding: 12px 24px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 25px;
+}
+
+button:hover {
+    background-color: #00f3ff;
+    color: #050a14;
+}
+
+.target-card {
+    border: 1px solid #00f3ff;
+    padding: 18px;
+    margin-bottom: 15px;
+    background-color: rgba(0, 243, 255, 0.05);
+}
+
+.target-card.hazard {
+    border-color: #ff2a2a;
+    color: #ff9999;
+    background-color: rgba(255, 42, 42, 0.12);
+}
+
+.alert-badge {
+    font-weight: bold;
+    color: #ff2a2a;
+}
+
+.jpl-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #00f3ff;
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+.target-card.hazard .jpl-link {
+    color: #ff8080;
+}
