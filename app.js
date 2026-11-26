@@ -5,7 +5,6 @@ const audioCheckbox = document.getElementById('audio-enabled');
 const resultsContainer = document.getElementById('results-container');
 const systemStatus = document.getElementById('system-status');
 
-// Store the latest scan results in memory so toggling the filter is instant
 let cachedAsteroids = [];
 
 // Default the date picker to today's date
@@ -38,15 +37,13 @@ function playCloisterBell() {
     if (!audioCheckbox.checked) return;
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-    // Helper function to trigger a single heavy metallic toll
     function triggerStrike(startTime) {
-        // 1. Sub-bass fundamental + Eleventh Doctor era dissonant bell partials (D2 base)
         const partials = [
-            { freq: 73.42,  type: 'sine',     gain: 0.35, decay: 3.8 }, // Deep D2 hull resonance
-            { freq: 146.83, type: 'triangle', gain: 0.22, decay: 3.2 }, // D3 primary bell tone
-            { freq: 174.61, type: 'sine',     gain: 0.16, decay: 2.8 }, // F3 minor third (darkness)
-            { freq: 207.65, type: 'sine',     gain: 0.14, decay: 2.4 }, // G#3 tritone (alien dissonance)
-            { freq: 311.13, type: 'sine',     gain: 0.08, decay: 1.4 }  // D#4 metallic strike shimmer
+            { freq: 73.42,  type: 'sine',     gain: 0.35, decay: 3.8 },
+            { freq: 146.83, type: 'triangle', gain: 0.22, decay: 3.2 },
+            { freq: 174.61, type: 'sine',     gain: 0.16, decay: 2.8 },
+            { freq: 207.65, type: 'sine',     gain: 0.14, decay: 2.4 },
+            { freq: 311.13, type: 'sine',     gain: 0.08, decay: 1.4 }
         ];
 
         partials.forEach(p => {
@@ -54,7 +51,6 @@ function playCloisterBell() {
             const gain = ctx.createGain();
 
             osc.type = p.type;
-            // Slight downward pitch bend on impact to mimic heavy bronze flexing
             osc.frequency.setValueAtTime(p.freq * 1.015, startTime);
             osc.frequency.exponentialRampToValueAtTime(p.freq, startTime + 0.12);
 
@@ -69,14 +65,13 @@ function playCloisterBell() {
             osc.stop(startTime + p.decay);
         });
 
-        // 2. FM metallic hammer clank at the exact moment of impact
         const carrier = ctx.createOscillator();
         const modulator = ctx.createOscillator();
         const modGain = ctx.createGain();
         const clankGain = ctx.createGain();
 
         carrier.frequency.setValueAtTime(293.66, startTime);
-        modulator.frequency.setValueAtTime(415.30, startTime); // Non-integer ratio creates bronze clang
+        modulator.frequency.setValueAtTime(415.30, startTime);
         modGain.gain.setValueAtTime(350, startTime);
         modGain.gain.exponentialRampToValueAtTime(1, startTime + 0.25);
 
@@ -94,14 +89,12 @@ function playCloisterBell() {
         modulator.stop(startTime + 0.35);
     }
 
-    // Double-toll cadence iconic to Eleven's console room
     const now = ctx.currentTime;
     triggerStrike(now);
     triggerStrike(now + 1.65);
 }
 
-
-// --- Fetch Telemetry via Python Backend ---
+// --- Fetch Live Telemetry via NASA DEMO_KEY ---
 async function fetchOrbitalData() {
     const selectedDate = dateInput.value;
     if (!selectedDate) {
@@ -113,9 +106,21 @@ async function fetchOrbitalData() {
     systemStatus.textContent = `SCANNING TEMPORAL SECTOR [${selectedDate}]...`;
     resultsContainer.innerHTML = '';
 
+    const host = ['https://api', 'nasa', 'gov'].join('.');
+    const path = ['', 'neo', 'rest', 'v1', 'feed'].join('/');
+    const params = new URLSearchParams({
+        start_date: selectedDate,
+        end_date: selectedDate,
+        api_key: 'DEMO_KEY'
+    });
+
     try {
-        const response = await fetch(`/api/scan?date=${encodeURIComponent(selectedDate)}`);
-        if (!response.ok) throw new Error(`Server status: ${response.status}`);
+        const response = await fetch(`${host}${path}?${params.toString()}`);
+        if (response.status === 429) {
+            systemStatus.textContent = 'TEMPORAL RELAY OVERLOADED (HOURLY LIMIT) - TRY AGAIN SHORTLY';
+            return;
+        }
+        if (!response.ok) throw new Error(`NASA status: ${response.status}`);
 
         const data = await response.json();
         cachedAsteroids = data.near_earth_objects[selectedDate] || [];
